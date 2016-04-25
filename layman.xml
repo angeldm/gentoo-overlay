@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<layman>
+   <overlay
+      type    = "git"
+      src     = "https://angeldm@github.com/angeldm/gentoo-overlay.git"
+      contact = ""
+      status  = "unofficial"
+      name    = "aegypius">
+      <link>http://github.com/angeldm/gentoo-overlay</link>
+      <description>aegypius personal overlay</description>
+   </overlay>
+</layman>
