@@ -2,10 +2,10 @@
 <layman>
    <overlay
       type    = "git"
-      src     = "https://angeldm@github.com/angeldm/gentoo-overlay.git"
+      src     = "https://github.com/angeldm/gentoo-overlay.git"
       contact = ""
       status  = "unofficial"
-      name    = "aegypius">
+      name    = "angeldm">
       <link>http://github.com/angeldm/gentoo-overlay</link>
       <description>aegypius personal overlay</description>
    </overlay>
