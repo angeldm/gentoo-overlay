@@ -1,0 +1,11 @@
+--- a/pjmedia/src/pjmedia/resample_libsamplerate.c	2013-03-25 21:00:56.718643953 -0400
++++ b/pjmedia/src/pjmedia/resample_libsamplerate.c	2013-03-25 21:01:29.310647197 -0400
+@@ -33,7 +33,7 @@
+ 
+ #if PJMEDIA_RESAMPLE_IMP==PJMEDIA_RESAMPLE_LIBSAMPLERATE
+ 
+-#include "../../third_party/libsamplerate/src/samplerate.h"
++#include "samplerate.h"
+ 
+ #define THIS_FILE   "resample_libsamplerate.c"
+ 
