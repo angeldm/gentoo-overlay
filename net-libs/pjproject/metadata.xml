@@ -17,5 +17,13 @@
 <flag name='srtp'></flag>
 <flag name='python'>install python bindings</flag>
 <flag name='video'></flag>
+<flag name='video'></flag>
+<flag name='amr'></flag>
+<flag name='epoll'></flag>
+<flag name='ilbc'></flag>
+<flag name='libyuv'></flag>
+<flag name='openh264'></flag>
+<flag name='resample'></flag>
+<flag name='v4l2'></flag>
 </use>
 </pkgmetadata>

@@ -5,8 +5,7 @@
 EAPI="6"
 inherit eutils
 
-DESCRIPTION="Multimedia communication libraries written in C language
-for building VoIP applications."
+DESCRIPTION="Multimedia communication libraries written in C language for building VoIP applications."
 HOMEPAGE="http://www.pjsip.org/"
 SRC_URI="http://www.pjsip.org/release/${PV}/pjproject-${PV}.tar.bz2"
 KEYWORDS="~amd64 ~x86"
