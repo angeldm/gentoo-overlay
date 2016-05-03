@@ -1,0 +1,39 @@
+diff -Nuar a/github.com/xenserver/xe-guest-utilities/guestmetric/guestmetric_linux.go b/github.com/xenserver/xe-guest-utilities/guestmetric/guestmetric_linux.go
+--- github.com/xenserver/xe-guest-utilities/guestmetric/guestmetric_linux.go	2015-06-18 00:20:40.000000000 +0200
++++ github.com/xenserver/xe-guest-utilities/guestmetric/guestmetric_linux.go	2016-04-22 00:55:16.000000000 +0200
+@@ -1,7 +1,7 @@
+ package guestmetric
+ 
+ import (
+-	xenstoreclient "../xenstoreclient"
++	"github.com/xenserver/xe-guest-utilities/xenstoreclient"
+ 	"bufio"
+ 	"bytes"
+ 	"fmt"
+diff -Nuar a/github.com/xenserver/xe-guest-utilities/xe-daemon/xe-daemon.go b/github.com/xenserver/xe-guest-utilities/xe-daemon/xe-daemon.go
+--- github.com/xenserver/xe-guest-utilities/xe-daemon/xe-daemon.go	2015-06-18 00:20:40.000000000 +0200
++++ github.com/xenserver/xe-guest-utilities/xe-daemon/xe-daemon.go	2016-04-22 00:55:40.000000000 +0200
+@@ -1,8 +1,8 @@
+ package main
+ 
+ import (
+-	guestmetric "../guestmetric"
+-	xenstoreclient "../xenstoreclient"
++	"github.com/xenserver/xe-guest-utilities/guestmetric"
++	"github.com/xenserver/xe-guest-utilities/xenstoreclient"
+ 	"flag"
+ 	"fmt"
+ 	"log"
+diff -Nuar a/github.com/xenserver/xe-guest-utilities/xenstore/xenstore.go b/github.com/xenserver/xe-guest-utilities/xenstore/xenstore.go
+--- github.com/xenserver/xe-guest-utilities/xenstore/xenstore.go	2015-06-18 00:20:40.000000000 +0200
++++ github.com/xenserver/xe-guest-utilities/xenstore/xenstore.go	2016-04-22 00:55:40.000000000 +0200
+@@ -1,7 +1,7 @@
+ package main
+ 
+ import (
+-	xenstoreclient "../xenstoreclient"
++	"github.com/xenserver/xe-guest-utilities/xenstoreclient"
+ 	"fmt"
+ 	"os"
+ 	"strings"
+

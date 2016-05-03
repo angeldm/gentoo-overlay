@@ -1,0 +1,10 @@
+[Unit]
+Description=XenServer Linux Guest Agent
+
+[Service]
+ExecStartPre=/usr/sbin/xe-linux-distribution /var/cache/xe-linux-distribution
+ExecStart=/usr/sbin/xe-daemon
+SuccessExitStatus=1 
+
+[Install]
+WantedBy=multi-user.target

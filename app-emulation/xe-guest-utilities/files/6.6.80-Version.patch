@@ -1,0 +1,17 @@
+--- /github.com/xenserver/xe-guest-utilities/guestmetric/guestmetric_linux.go	2015-06-18 00:20:40.000000000 +0200
++++ github.com/xenserver/xe-guest-utilities/guestmetric/guestmetric_linux.go	2016-04-22 01:38:13.000000000 +0200
+@@ -47,10 +47,10 @@
+ 		current["control/feature-balloon"] = "0"
+ 	}
+ 	current["attr/PVAddons/Installed"] = "1"
+-	current["attr/PVAddons/MajorVersion"] = "@PRODUCT_MAJOR_VERSION@"
+-	current["attr/PVAddons/MinorVersion"] = "@PRODUCT_MINOR_VERSION@"
+-	current["attr/PVAddons/MicroVersion"] = "@PRODUCT_MICRO_VERSION@"
+-	current["attr/PVAddons/BuildVersion"] = "@NUMERIC_BUILD_NUMBER@"
++	current["attr/PVAddons/MajorVersion"] = "6"
++	current["attr/PVAddons/MinorVersion"] = "6"
++	current["attr/PVAddons/MicroVersion"] = "80"
++	current["attr/PVAddons/BuildVersion"] = "17"
+ 
+ 	return current, nil
+ }

@@ -1,0 +1,12 @@
+--- github.com/xenserver/xe-guest-utilities/mk/xe-linux-distribution.service	2015-06-18 00:20:40.000000000 +0200
++++ github.com/xenserver/xe-guest-utilities/mk/xe-linux-distribution.service	2016-04-22 01:42:32.000000000 +0200
+@@ -2,8 +2,8 @@
+ Description=XenServer Linux Guest Agent
+ 
+ [Service]
+-ExecStartPre=/usr/share/oem/xs/xe-linux-distribution /var/cache/xe-linux-distribution
+-ExecStart=/usr/share/oem/xs/xe-daemon
++ExecStartPre=/usr/sbin/xe-linux-distribution /var/cache/xe-linux-distribution
++ExecStart=/usr/sbin/xe-daemon
+
+

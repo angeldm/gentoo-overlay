@@ -1,0 +1,44 @@
+diff -Nuar a/github.com/xenserver/xe-guest-utilities/mk/xe-linux-distribution b/github.com/xenserver/xe-guest-utilities/mk/xe-linux-distribution
+--- github.com/xenserver/xe-guest-utilities/mk/xe-linux-distribution	2015-06-18 00:20:40.000000000 +0200
++++ github.com/xenserver/xe-guest-utilities/mk/xe-linux-distribution	2016-04-22 01:45:55.000000000 +0200
+@@ -293,6 +293,32 @@
+ 
+ }
+ 
++identify_gentoo()
++{
++    gentoo_release="$1"
++
++    if [ ! -e "${gentoo_release}" ] ; then
++    return 1
++    fi
++
++    distro="gentoo"
++
++    eval $(cat ${gentoo_release} | awk '{ print "release=" $5 }' )
++
++    if [ -z "${release}" ] ; then
++    return 1
++    fi
++
++    eval $(echo $release | awk -F. -- '{ print "major=" $1 ; print "minor=" $2 }' )
++
++    if [ -z "${major}" -o -z "$minor" ] ; then
++    return 1
++    fi
++
++    write_to_output "${distro}" "${major}" "${minor}" "${distro}"
++}
++
++
+ if [ $# -eq 1 ] ; then
+     exec 1>"$1"
+ fi
+@@ -306,6 +332,7 @@
+     identify_lsb    lsb_release         && exit 0
+     identify_debian /etc/debian_version && exit 0
+     identify_boot2docker /etc/boot2docker && exit 0
++    identify_gentoo /etc/gentoo-release && exit 0
+ 
+     if [ $# -eq 1 ] ; then
+ 	rm -f "$1"
