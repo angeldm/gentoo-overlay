@@ -14,8 +14,7 @@ LICENSE="GPL-2"
 SLOT="0"
 IUSE="alsa amr doc epoll examples ext-sound ffmpeg g711 g722 g7221 gsm ilbc ipv6 l16 libyuv openh264 oss python resample sound speex srtp static-libs sdl ssl v4l2 video libressl"
 
-DEPEND="virtual/pkgconfig
-	alsa? ( media-libs/alsa-lib )
+RDEPEND="alsa? ( media-libs/alsa-lib )
 	amr? ( media-libs/opencore-amr )
 	gsm? ( media-sound/gsm )
 	ilbc? ( dev-libs/ilbc-rfc3951 )
@@ -26,7 +25,8 @@ DEPEND="virtual/pkgconfig
 	srtp? ( net-libs/libsrtp )
 	ssl? ( !libressl? ( dev-libs/openssl:0= )
 		libressl? ( dev-libs/libressl:0= ) ) "
-RDEPEND="${DEPEND}"
+DEPEND="${RDEPEND}
+	virtual/pkgconfig"
 
 S="${WORKDIR}/pjproject-${PV}"
 
