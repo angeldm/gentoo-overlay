@@ -2,15 +2,15 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=6
-inherit autotools eutils linux-info multilib user systemd
+EAPI=5
+
+inherit autotools eutils linux-info multilib user systemd flag-o-matic multilib-minimal
 
 MY_P="${PN}-${PV/_/-}"
-
 DESCRIPTION="Asterisk: A Modular Open Source PBX System"
 HOMEPAGE="http://www.asterisk.org/"
 SRC_URI="http://downloads.asterisk.org/pub/telephony/asterisk/releases/${MY_P}.tar.gz
-	 mirror://gentoo/gentoo-asterisk-patchset-4.03.tar.bz2"
+	 mirror://gentoo/gentoo-asterisk-patchset-4.02.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
@@ -20,7 +20,7 @@ IUSE_VOICEMAIL_STORAGE="
 	voicemail_storage_odbc
 	voicemail_storage_imap
 "
-IUSE="${IUSE_VOICEMAIL_STORAGE} alsa bluetooth calendar +caps cluster curl dahdi debug doc freetds gtalk http iconv ilbc xmpp ldap libedit libressl lua mysql newt +samples odbc osplookup oss portaudio postgres radius selinux snmp span speex srtp static syslog vorbis"
+IUSE="${IUSE_VOICEMAIL_STORAGE} alsa bluetooth calendar +caps cluster curl dahdi debug doc freetds gtalk http iconv ilbc xmpp ldap libedit libressl lua mp3 mysql newt +samples odbc osplookup oss +pjproject +portaudio postgres python radius selinux snmp span speex +srtp +ssl static syslog vorbis"
 IUSE_EXPAND="VOICEMAIL_STORAGE"
 REQUIRED_USE="gtalk? ( xmpp )
 	^^ ( ${IUSE_VOICEMAIL_STORAGE/+/} )
@@ -34,8 +34,6 @@ CDEPEND="dev-db/sqlite:3
 	dev-libs/popt
 	dev-libs/jansson
 	dev-libs/libxml2
-	!libressl? ( dev-libs/openssl:0 )
-	libressl? ( dev-libs/libressl )
 	sys-libs/ncurses:*
 	sys-libs/zlib
 	alsa? ( media-libs/alsa-lib )
@@ -57,10 +55,15 @@ CDEPEND="dev-db/sqlite:3
 	ldap? ( net-nds/openldap )
 	libedit? ( dev-libs/libedit )
 	lua? ( dev-lang/lua:* )
+	mp3? ( dev-vcs/subversion )
 	mysql? ( virtual/mysql )
 	newt? ( dev-libs/newt )
 	odbc? ( dev-db/unixODBC )
 	osplookup? ( net-libs/osptoolkit )
+	pjproject? ( media-libs/spandsp
+			media-libs/speex
+			media-sound/gsm
+			media-libs/portaudio )
 	portaudio? ( media-libs/portaudio )
 	postgres? ( dev-db/postgresql:* )
 	radius? ( net-dialup/freeradius-client )
@@ -68,6 +71,8 @@ CDEPEND="dev-db/sqlite:3
 	span? ( media-libs/spandsp )
 	speex? ( media-libs/speex )
 	srtp? ( net-libs/libsrtp )
+	ssl? (	!libressl? ( dev-libs/openssl:0= )
+			libressl? ( dev-libs/libressl:0= ) )
 	vorbis? ( media-libs/libvorbis )"
 
 DEPEND="${CDEPEND}
@@ -81,9 +86,9 @@ RDEPEND="${CDEPEND}
 	selinux? ( sec-policy/selinux-asterisk )
 	syslog? ( virtual/logger )"
 
-PDEPEND="net-misc/asterisk-core-sounds
-	net-misc/asterisk-extra-sounds
-	net-misc/asterisk-moh-opsound"
+#PDEPEND="net-misc/asterisk-core-sounds
+#	net-misc/asterisk-extra-sounds
+#	net-misc/asterisk-moh-opsound"
 
 S="${WORKDIR}/${MY_P}"
 
@@ -100,13 +105,14 @@ pkg_setup() {
 }
 
 src_prepare() {
-	default
+	base_src_prepare
 	AT_M4DIR=autoconf eautoreconf
 }
 
 src_configure() {
 	local vmst
-
+	local CFLAGS="${CFLAGS}"
+	CFLAGS="${CFLAGS}" \
 	econf \
 		--libdir="/usr/$(get_libdir)" \
 		--localstatedir="/var" \
@@ -119,7 +125,8 @@ src_configure() {
 		$(use_with caps cap) \
 		$(use_with http gmime) \
 		$(use_with newt) \
-		$(use_with portaudio)
+		$(use_with portaudio) \
+		$(use_with pjproject pjproject)
 
 	# Blank out sounds/sounds.xml file to prevent
 	# asterisk from installing sounds files (we pull them in via
@@ -172,7 +179,7 @@ src_configure() {
 	use_select calendar		res_calendar res_calendar_{caldav,ews,exchange,icalendar}
 	use_select cluster		res_corosync
 	use_select curl			func_curl res_config_curl res_curl
-	use_select dahdi		app_dahdibarge app_dahdiras app_meetme chan_dahdi codec_dahdi res_timing_dahdi
+	#use_select dahdi		app_dahdibarge app_dahdiras app_meetme chan_dahdi codec_dahdi res_timing_dahdi
 	use_select freetds		{cdr,cel}_tds
 	use_select gtalk		chan_motif
 	use_select http			res_http_post
@@ -185,6 +192,7 @@ src_configure() {
 	use_select odbc			cdr_adaptive_odbc res_config_odbc {cdr,cel,res,func}_odbc
 	use_select osplookup		app_osplookup
 	use_select oss			chan_oss
+	use_select pjproject	res_pjsip
 	use_select postgres		{cdr,cel}_pgsql res_config_pgsql
 	use_select radius		{cdr,cel}_radius
 	use_select snmp			res_snmp
@@ -209,7 +217,7 @@ src_configure() {
 }
 
 src_compile() {
-	ASTLDFLAGS="${LDFLAGS}" emake
+	ASTLDFLAGS="${LDFLAGS}" emake NOISY_BUILD=yes
 }
 
 src_install() {
@@ -248,8 +256,8 @@ src_install() {
 	diropts -m 0750 -o asterisk -g asterisk
 	keepdir /var/log/asterisk/{cdr-csv,cdr-custom}
 
-	newinitd "${FILESDIR}"/1.8.0/asterisk.initd7 asterisk
-	newconfd "${FILESDIR}"/1.8.0/asterisk.confd asterisk
+	#inewinitd "${FILESDIR}"/1.8.0/asterisk.initd7 asterisk
+	#newconfd "${FILESDIR}"/1.8.0/asterisk.confd asterisk
 
 	systemd_dounit "${FILESDIR}"/asterisk.service
 	systemd_newtmpfilesd "${FILESDIR}"/asterisk.tmpfiles.conf asterisk.conf
