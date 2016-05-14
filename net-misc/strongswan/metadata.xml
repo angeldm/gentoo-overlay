@@ -51,6 +51,12 @@
       22-24(4.4+)
       <pkg>dev-libs/openssl</pkg> has to be compiled with USE="-bindist".
     </flag>
+    <flag name="strongswan_ssl_libressl">
+      Enable support for the led plugin.
+    </flag>
+    <flag name="strongswan_ssl_openssl">
+      Enable support for the led plugin.
+    </flag>
     <flag name="pkcs11">
       Enable pkcs11 support.
     </flag>

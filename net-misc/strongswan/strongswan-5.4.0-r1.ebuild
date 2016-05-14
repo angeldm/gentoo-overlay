@@ -12,18 +12,17 @@ SRC_URI="http://download.strongswan.org/${P}.tar.bz2"
 LICENSE="GPL-2 RSA DES"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~ppc ~ppc64 ~x86"
-IUSE="+caps curl +constraints debug dhcp eap farp gcrypt +gmp ldap libressl mysql networkmanager +non-root +ssl selinux sqlite pam pkcs11"
 
-STRONGSWAN_PLUGINS_STD="led lookip systime-fix unity vici"
-STRONGSWAN_PLUGINS_OPT="blowfish ccm ctr gcm ha ipseckey ntru padlock rdrand unbound whitelist"
+IUSE_PLUGINS="+strongswan_plugins_led +strongswan_plugins_lookip +strongswan_plugins_systime-fix +strongswan_plugins_unity +strongswan_plugins_vici strongswan_plugins_blowfish strongswan_plugins_ccm strongswan_plugins_ctr strongswan_plugins_gcm strongswan_plugins_ha strongswan_plugins_ipseckey strongswan_plugins_ntru strongswan_plugins_padlock strongswan_plugins_rdrand strongswan_plugins_unbound strongswan_plugins_whitelist"
+IUSE_SSL="strongswan_ssl_libressl strongswan_ssl_openssl"
+IUSE="${IUSE_PLUGINS} ${IUSE_SSL} +caps curl +constraints debug dhcp eap farp gcrypt +gmp ldap mysql networkmanager +non-root +ssl selinux sqlite pam pkcs11"
 
-for mod in $STRONGSWAN_PLUGINS_STD; do
-	IUSE="${IUSE} +strongswan_plugins_${mod}"
-done
+IUSE_EXPAND="PLUGINS"
+IUSE_EXPAND="SSL"
 
-for mod in $STRONGSWAN_PLUGINS_OPT; do
-	IUSE="${IUSE} strongswan_plugins_${mod}"
-done
+REQUIRED_USE="
+	^^ ( ${IUSE_SSL/+/} )
+"
 
 COMMON_DEPEND="!net-misc/openswan
 	gmp? ( >=dev-libs/gmp-4.1.5:= )
@@ -31,14 +30,17 @@ COMMON_DEPEND="!net-misc/openswan
 	caps? ( sys-libs/libcap )
 	curl? ( net-misc/curl )
 	ldap? ( net-nds/openldap )
-	ssl? (
-		!libressl? ( dev-libs/openssl:0= )
-	    libressl? ( dev-libs/libressl:0= ) )
 	mysql? ( virtual/mysql )
 	sqlite? ( >=dev-db/sqlite-3.3.1 )
 	networkmanager? ( net-misc/networkmanager )
 	pam? ( sys-libs/pam )
-	strongswan_plugins_unbound? ( net-dns/unbound net-libs/ldns )"
+	strongswan_plugins_unbound? ( net-dns/unbound net-libs/ldns )
+	ssl? (
+		strongswan_ssl_openssl? ( dev-libs/openssl:0= )
+		strongswan_ssl_libressl? ( dev-libs/libressl:0= )
+)
+"
+
 DEPEND="${COMMON_DEPEND}
 	virtual/linux-sources
 	sys-kernel/linux-headers"
