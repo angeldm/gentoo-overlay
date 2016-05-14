@@ -1,11 +1,11 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI="6"
 inherit eutils
 
-DESCRIPTION="Multimedia communication libraries written in C language for building VoIP applications."
+DESCRIPTION="Multimedia communication libraries for building VoIP applications."
 HOMEPAGE="http://www.pjsip.org/"
 SRC_URI="http://www.pjsip.org/release/${PV}/pjproject-${PV}.tar.bz2"
 KEYWORDS="~amd64 ~x86"
@@ -13,7 +13,6 @@ KEYWORDS="~amd64 ~x86"
 LICENSE="GPL-2"
 SLOT="0"
 IUSE="alsa amr doc epoll examples ext-sound ffmpeg g711 g722 g7221 gsm ilbc ipv6 l16 libyuv openh264 oss python resample sound speex srtp static-libs sdl ssl v4l2 video libressl"
-
 
 DEPEND="virtual/pkgconfig
 	alsa? ( media-libs/alsa-lib )
@@ -97,6 +96,6 @@ src_install() {
 		doins "${S}/pjsip-apps/src/samples/"*
 	fi
 
-        # Remove static library if needed
-        use static-libs || rm -f "${D}"/usr/lib*/lib*.a
+	# Remove static library if needed
+	use static-libs || rm -f "${D}"/usr/lib*/lib*.a
 }

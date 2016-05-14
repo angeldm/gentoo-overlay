@@ -8,7 +8,6 @@
 <longdescription lang="en">
 </longdescription>
 <use>
-<flag name='cli'>install command line tools</flag>
 <flag name='ext-sound'></flag>
 <flag name='g711'></flag>
 <flag name='g722'></flag>
