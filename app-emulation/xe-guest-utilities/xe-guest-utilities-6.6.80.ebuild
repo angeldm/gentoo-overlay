@@ -38,7 +38,7 @@ RELEASE=17
 
 src_prepare() {
 	local go_src="${EGO_PN%/...}"
-    rm -rf src/${go_src}/.git* || die
+	rm -rf src/${go_src}/.git* || die
 	#rm -rf src/${go_src}/mk* || die
 	rm -rf src/${go_src}/Makefile || die
 	#sed -i -e 's/guestmetric \"..\/guestmetric\"/\"github.com\/xenserver\/xe-guest-utilities\/guestmetric\"/g' src/${go_src}/xe-daemon/xe-daemon.go || die
